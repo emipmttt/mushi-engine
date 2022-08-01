@@ -8,19 +8,23 @@
       v-for="(tile, index) in gameData.tiles"
       :key="index"
       class="tiles__button--tile"
-      :src="tile"
+      :src="tile.img"
       draggable="true"
       @dragover="(e) => e.preventDefault()"
       @drop="replaceTile(index)"
       @dragstart="setTileToReplace(index)"
       @click="setTileToPut(index)"
+      @dblclick="removeTile(index)"
     />
-    <img
-      id="tileToPut"
-      v-if="tileToPut"
-      class="current-tile"
-      :src="tileToPut"
-    />
+    <div v-if="tileToPut" class="tile-to-put-config">
+      Solid
+      <input type="checkbox" v-model="tileToPut.solid" />
+      <br />
+      Liquid
+      <input type="checkbox" v-model="tileToPut.liquid" />
+
+      <img id="tileToPut" class="current-tile" :src="tileToPut.img" />
+    </div>
   </div>
 </template>
 
@@ -36,6 +40,7 @@ export default {
       "updateCurrentScreen",
       "setTileToReplace",
       "setTileToPut",
+      "removeTile",
     ]),
   },
 };
@@ -69,10 +74,13 @@ export default {
 }
 
 .current-tile {
+  border-radius: 15px;
+  border: solid 1px grey;
+}
+
+.tile-to-put-config {
   position: fixed;
   right: 5px;
   bottom: 5px;
-  border-radius: 15px;
-  border: solid 1px grey;
 }
 </style>

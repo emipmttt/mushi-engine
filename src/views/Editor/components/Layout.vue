@@ -2,14 +2,8 @@
   <div class="layout">
     <!-- SCREENS -->
     <div @click="updateCurrentLayout('SC')" class="layout__button">SC</div>
-    <!-- BACKGROUND -->
-    <div @click="updateCurrentLayout('BG')" class="layout__button">BG</div>
-    <!-- SOLID TERRAIN -->
-    <div @click="updateCurrentLayout('ST')" class="layout__button">ST</div>
-    <!-- OBJECTS -->
-    <div @click="updateCurrentLayout('OB')" class="layout__button">OB</div>
-    <!-- CHARACTERS -->
-    <div @click="updateCurrentLayout('CH')" class="layout__button">CH</div>
+    <!-- TILES -->
+    <div @click="updateCurrentLayout('TL')" class="layout__button">TL</div>
     <!-- CODE -->
     <div @click="updateCurrentLayout('CD')" class="layout__button">CD</div>
     <!-- SAVE -->
@@ -25,7 +19,7 @@ import { mapActions, mapMutations } from "vuex";
 export default {
   methods: {
     ...mapMutations(["updateCurrentLayout"]),
-    ...mapActions(["save"])
+    ...mapActions(["save"]),
   },
 };
 </script>

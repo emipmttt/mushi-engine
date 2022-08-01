@@ -40,6 +40,13 @@ export default new Vuex.Store({
       newState.push(value);
       state.gameData.tiles = newState;
     },
+    addSpecialTile(state, value) {
+      const newState = state;
+      newState.gameData.screens[state.currentScreenIndex].data.specialTiles[`x${value.x}y${value.y}`] = (value)
+
+      state = Object.assign({}, { ...newState });
+
+    },
     setTileToReplace(state, index) {
       state.tileToReplace = state.gameData.tiles[index];
       state.tileToReplaceIndex = index;
@@ -52,8 +59,6 @@ export default new Vuex.Store({
     },
     updateScreenBakground(state, value) {
       const newState = state;
-
-      console.log("screen", value);
 
       newState.gameData.screens[state.currentScreenIndex].data.background =
         value;
@@ -84,6 +89,7 @@ export default new Vuex.Store({
           width: 0,
           height: 0,
           background: "",
+          specialTiles: {}
         },
       });
     },
@@ -94,7 +100,16 @@ export default new Vuex.Store({
       Array.from(tileImageFile.target.files).forEach((file) => {
         var reader = new FileReader();
         reader.onloadend = function () {
-          context.commit("addTile", reader.result);
+          context.commit("addTile", { img: reader.result, solid: false, liquid: false });
+        };
+        reader.readAsDataURL(file);
+      });
+    },
+    Tile(context, tileImageFile) {
+      Array.from(tileImageFile.target.files).forEach((file) => {
+        var reader = new FileReader();
+        reader.onloadend = function () {
+          context.commit("addTile", { img: reader.result, solid: false, liquid: false });
         };
         reader.readAsDataURL(file);
       });

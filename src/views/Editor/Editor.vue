@@ -3,7 +3,7 @@
     <aside class="sidebar">
       <Layout />
       <Screens v-if="currentLayout == 'SC'" />
-      <BackgroundTiles v-if="currentLayout == 'BG'" />
+      <BackgroundTiles v-if="currentLayout == 'TL'" />
     </aside>
     <Screen v-if="currentScreen.title" :screen="currentScreen" />
   </div>

@@ -10,11 +10,21 @@
       @mouseup="handleMouseUp"
       @mousemove="handleMouseMove"
     ></canvas>
+    <br />
+    {{ currentScreen }}
+    <img
+      v-for="(tile, index) in gameData.screens[currentScreenIndex].data
+        .specialTiles"
+      :key="index"
+      :src="tile.img"
+      draggable="false"
+      :style="`user-select:none;position:absolute;top:${tile.y}px;left:${tile.x}px`"
+    />
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   props: {
     screen: Object,
@@ -25,10 +35,17 @@ export default {
     };
   },
   computed: {
-    ...mapState(["gameDate", "tileToPut"]),
+    ...mapState([
+      "gameData",
+      "tileToPut",
+      "currentLayout",
+      "currentScreen",
+      "currentScreenIndex",
+    ]),
   },
   methods: {
     ...mapActions(["findAndUpdateScreenBackground"]),
+    ...mapMutations(["addSpecialTile"]),
     handleMouseDown(e) {
       this.intervalSetItem = true;
       this.putTile(e);
@@ -41,7 +58,36 @@ export default {
         this.putTile(e);
       }
     },
+
     putTile(e) {
+      if (this.tileToPut.solid || this.tileToPut.liquid) {
+        this.putTileST(e);
+      } else {
+        this.putTileBG(e);
+      }
+    },
+    putTileST(e) {
+      const mouseX = parseInt(e.clientX + window.scrollX);
+      let counterX = 0;
+      const mouseY = parseInt(e.clientY + window.scrollY);
+      let counterY = 0;
+
+      while (counterX < mouseX) {
+        counterX += 64;
+      }
+
+      while (counterY < mouseY) {
+        counterY += 64;
+      }
+
+      this.addSpecialTile({
+        ...this.tileToPut,
+        x: counterX,
+        y: counterY,
+      });
+      this.$forceUpdate();
+    },
+    putTileBG(e) {
       const ctx = this.$refs.canvas.getContext("2d");
       const mouseX = parseInt(e.clientX + window.scrollX);
       let counterX = 0;
@@ -73,8 +119,9 @@ export default {
 .screen {
   display: inline-block;
 
-  width: calc(100vw - 420px);
+  width: calc(100vw - 440px);
   height: 100vh;
+  overflow: scroll;
 }
 
 .canvas {
