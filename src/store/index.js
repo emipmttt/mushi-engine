@@ -42,10 +42,18 @@ export default new Vuex.Store({
     },
     addSpecialTile(state, value) {
       const newState = state;
-      newState.gameData.screens[state.currentScreenIndex].data.specialTiles[`x${value.x}y${value.y}`] = (value)
+      newState.gameData.screens[state.currentScreenIndex].data.specialTiles[
+        `x${value.x}y${value.y}`
+      ] = value;
 
       state = Object.assign({}, { ...newState });
+    },
+    removeSpecialTile(state, value) {
+      const newState = state;
+      delete newState.gameData.screens[state.currentScreenIndex].data
+        .specialTiles[`x${value.x}y${value.y}`];
 
+      state = Object.assign({}, { ...newState });
     },
     setTileToReplace(state, index) {
       state.tileToReplace = state.gameData.tiles[index];
@@ -89,7 +97,7 @@ export default new Vuex.Store({
           width: 0,
           height: 0,
           background: "",
-          specialTiles: {}
+          specialTiles: {},
         },
       });
     },
@@ -100,7 +108,11 @@ export default new Vuex.Store({
       Array.from(tileImageFile.target.files).forEach((file) => {
         var reader = new FileReader();
         reader.onloadend = function () {
-          context.commit("addTile", { img: reader.result, solid: false, liquid: false });
+          context.commit("addTile", {
+            img: reader.result,
+            solid: false,
+            liquid: false,
+          });
         };
         reader.readAsDataURL(file);
       });
@@ -109,7 +121,11 @@ export default new Vuex.Store({
       Array.from(tileImageFile.target.files).forEach((file) => {
         var reader = new FileReader();
         reader.onloadend = function () {
-          context.commit("addTile", { img: reader.result, solid: false, liquid: false });
+          context.commit("addTile", {
+            img: reader.result,
+            solid: false,
+            liquid: false,
+          });
         };
         reader.readAsDataURL(file);
       });

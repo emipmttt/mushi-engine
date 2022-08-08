@@ -4,10 +4,12 @@
     <div @click="updateCurrentLayout('SC')" class="layout__button">SC</div>
     <!-- TILES -->
     <div @click="updateCurrentLayout('TL')" class="layout__button">TL</div>
+    <!-- CHARACTER -->
+    <div @click="updateCurrentLayout('TL')" class="layout__button">CH</div>
     <!-- CODE -->
     <div @click="updateCurrentLayout('CD')" class="layout__button">CD</div>
     <!-- SAVE -->
-    <div @click="save" class="layout__button">SV</div>
+    <div @click="updateBackground()" class="layout__button">SV</div>
   </div>
 </template>
 
@@ -19,7 +21,15 @@ import { mapActions, mapMutations } from "vuex";
 export default {
   methods: {
     ...mapMutations(["updateCurrentLayout"]),
-    ...mapActions(["save"]),
+    ...mapActions(["save", "findAndUpdateScreenBackground"]),
+    updateBackground() {
+      const canvas = document.querySelector("#canvas");
+      if (canvas) {
+        const image = canvas.toDataURL("image/png");
+        this.findAndUpdateScreenBackground(image);
+        this.save();
+      }
+    },
   },
 };
 </script>
@@ -28,7 +38,8 @@ export default {
 .layout {
   width: 64px;
   background: #222;
-  height: 100vh;
+  height: calc(100vh - 15px);
+
   display: inline-block;
 
   &__button {

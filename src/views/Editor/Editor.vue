@@ -35,9 +35,11 @@ export default {
   width: 400px;
   background: #333;
   color: rgb(173, 173, 173);
-  height: 100vh;
+  height: calc(100vh - 15px);
   display: inline-block;
   vertical-align: top;
+  position: relative;
+  z-index: 1;
 }
 
 .page {
