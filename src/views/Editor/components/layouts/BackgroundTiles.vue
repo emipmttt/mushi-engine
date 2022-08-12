@@ -4,11 +4,12 @@
       <div class="tiles__button">Create</div>
       <input style="display: none" @change="createTile" type="file" multiple />
     </label>
+    <hr />
     <img
       v-for="(tile, index) in gameData.tiles"
       :key="index"
       class="tiles__button--tile"
-      :src="tile.img"
+      :src="tile.directions?.static || tile.img"
       draggable="true"
       @dragover="(e) => e.preventDefault()"
       @drop="replaceTile(index)"
@@ -20,30 +21,36 @@
       @dblclick="removeTile(index)"
     />
     <div v-if="tileToPut" class="tile-to-put-config">
-      <div
-        class="selection-tile"
-        :style="
-          tileToPut.liquid
-            ? 'background-color: #5dace1;color:white '
-            : 'background-color: #333;color:white;'
-        "
-        @click="tileToPut.liquid = !tileToPut.liquid"
-      >
-        Liquid
-      </div>
-      <div
-        class="selection-tile"
-        :style="
-          tileToPut.solid
-            ? 'background-color: #5dace1;color:white '
-            : 'background-color: #333;color:white;'
-        "
-        @click="tileToPut.solid = !tileToPut.solid"
-      >
-        Solid
+      <div v-if="!tileToPut.options">
+        <div
+          class="selection-tile"
+          :style="
+            tileToPut.liquid
+              ? 'background-color: #5dace1;color:white '
+              : 'background-color: #333;color:white;'
+          "
+          @click="tileToPut.liquid = !tileToPut.liquid"
+        >
+          Liquid
+        </div>
+        <div
+          class="selection-tile"
+          :style="
+            tileToPut.solid
+              ? 'background-color: #5dace1;color:white '
+              : 'background-color: #333;color:white;'
+          "
+          @click="tileToPut.solid = !tileToPut.solid"
+        >
+          Solid
+        </div>
       </div>
 
-      <img id="tileToPut" class="current-tile" :src="tileToPut.img" />
+      <img
+        id="tileToPut"
+        class="current-tile"
+        :src="tileToPut.directions?.static || tileToPut.img"
+      />
     </div>
   </div>
 </template>

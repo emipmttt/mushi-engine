@@ -1,24 +1,24 @@
 <template>
   <div class="screen" @scroll="setScroll">
     <img
-      v-for="(tile, index) in gameData.screens[currentScreenIndex].data
-        .specialTiles"
+      v-for="(tile, index) in specialTiles"
       :key="index"
-      :src="tile.img"
+      :src="tile.directions?.static || tile.img"
       draggable="false"
       :style="`
-        user-select:none;
-        position:absolute;
-        top:0;
-        left:400px;
         margin-top:${tile.y - scroll.y}px;
         margin-left:${tile.x - scroll.x}px;
         z-index:${tile.x + tile.y}
       `"
-      :class="removing ? 'selected-tile' : ''"
+      :class="removing ? 'selected-tile' : '' + ' tile-item'"
       @mouseup="handleMouseUp"
       @click="removeTileST(tile.x, tile.y)"
       @mousemove="setMousePosition"
+      @contextmenu="
+        (e) => {
+          customContext(e, index);
+        }
+      "
     />
     <canvas
       class="canvas"
@@ -47,7 +47,7 @@
         opacity:.7
       `"
       id="tileToPutPreview"
-      :src="tileToPut.img"
+      :src="tileToPut.directions?.static || tileToPut.img"
       @mousedown="handleMouseDown"
       @mouseup="handleMouseUp"
       @mousemove="
@@ -56,7 +56,6 @@
           setMousePosition(e);
         }
       "
-      @dblclick="removeTileBG"
       draggable="false"
     />
     <!-- {{ currentScreen }} -->
@@ -88,10 +87,20 @@ export default {
       "currentLayout",
       "currentScreen",
       "currentScreenIndex",
+      "itemToCode",
     ]),
+    specialTiles() {
+      return this.gameData.screens[this.currentScreenIndex].data.specialTiles;
+    },
   },
   methods: {
-    ...mapMutations(["addSpecialTile", "removeSpecialTile"]),
+    ...mapMutations([
+      "addSpecialTile",
+      "removeSpecialTile",
+      "updateCurrentLayout",
+      "setItemToCode",
+    ]),
+
     setScroll(e) {
       this.scroll = {
         x: e.target.scrollLeft,
@@ -122,7 +131,11 @@ export default {
       }
     },
     putTile(e) {
-      if (this.tileToPut.solid || this.tileToPut.liquid) {
+      if (
+        this.tileToPut.solid ||
+        this.tileToPut.liquid ||
+        this.tileToPut.options
+      ) {
         this.putTileST(e);
       } else {
         this.putTileBG(e);
@@ -139,13 +152,13 @@ export default {
       this.$forceUpdate();
     },
     putTileBG(e) {
-      const ctx = this.$refs.canvas.getContext("2d");
-      const { counterX, counterY } = calculateMousePosition(e);
-      ctx.drawImage(
-        document.querySelector("#tileToPut"),
-        counterX - 64,
-        counterY - 64
-      );
+      const tileToPut = document.querySelector("#tileToPut");
+
+      if (tileToPut) {
+        const ctx = this.$refs.canvas.getContext("2d");
+        const { counterX, counterY } = calculateMousePosition(e);
+        ctx.drawImage(tileToPut, counterX - 64, counterY - 64);
+      }
     },
     removeTileBG(e) {
       const ctx = this.$refs.canvas.getContext("2d");
@@ -163,11 +176,18 @@ export default {
     setBackground() {
       const img = document.createElement("img");
       img.src = this.currentScreen.data.background;
-      console.log(this.currentScreen.data);
       const canvas = document.querySelector("#canvas");
       canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
       setTimeout(() => {
         canvas.getContext("2d").drawImage(img, 0, 0);
+      }, 10);
+    },
+
+    customContext(e, index) {
+      e.preventDefault();
+      this.updateCurrentLayout("CD");
+      setTimeout(() => {
+        this.setItemToCode(index);
       }, 10);
     },
   },
@@ -209,5 +229,16 @@ export default {
 
 .selected-tile:hover {
   filter: brightness(200%);
+}
+
+.tile-item {
+  user-select: none;
+  position: absolute;
+  top: 0;
+  left: 400px;
+}
+
+.tile-item:hover {
+  filter: brightness(130%);
 }
 </style>

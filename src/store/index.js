@@ -15,13 +15,15 @@ export default new Vuex.Store({
       primaryScreen: 0,
       screens: [],
       tiles: [],
+      characters: [],
     },
+    itemToCode: 0,
   },
   mutations: {
     loadState(state, value) {
       state.currentLayout = value.currentLayout;
       state.currentScreen = value.currentScreen;
-      state.gameData = value.gameData;
+      state.gameData = { ...state.gameData, ...value.gameData };
     },
     updateCurrentLayout(state, value) {
       state.currentLayout = value;
@@ -40,6 +42,11 @@ export default new Vuex.Store({
       newState.push(value);
       state.gameData.tiles = newState;
     },
+    addCharacters(state, value) {
+      const newState = state.gameData.characters;
+      newState.push(value);
+      state.gameData.characters = newState;
+    },
     addSpecialTile(state, value) {
       const newState = state;
       newState.gameData.screens[state.currentScreenIndex].data.specialTiles[
@@ -53,6 +60,11 @@ export default new Vuex.Store({
       delete newState.gameData.screens[state.currentScreenIndex].data
         .specialTiles[`x${value.x}y${value.y}`];
 
+      state = Object.assign({}, { ...newState });
+    },
+    removeCharacter(state, index) {
+      const newState = state;
+      newState.gameData.characters.splice(index, 1);
       state = Object.assign({}, { ...newState });
     },
     setTileToReplace(state, index) {
@@ -72,6 +84,16 @@ export default new Vuex.Store({
         value;
 
       state = newState;
+    },
+    setItemToCode(state, index) {
+      state.itemToCode = index;
+    },
+    setCodeToItem(state, code) {
+      const newState = state;
+      newState.gameData.screens[state.currentScreenIndex].data.specialTiles[
+        state.itemToCode
+      ].code = code;
+      state = Object.assign({}, { ...newState });
     },
   },
   actions: {

@@ -4,6 +4,8 @@
       <Layout />
       <Screens v-if="currentLayout == 'SC'" />
       <BackgroundTiles v-if="currentLayout == 'TL'" />
+      <Characters v-if="currentLayout == 'CH'" />
+      <Code v-if="currentLayout == 'CD'" />
     </aside>
     <Screen v-if="currentScreen.title" :screen="currentScreen" />
   </div>
@@ -15,9 +17,11 @@ import Layout from "./components/Layout.vue";
 import Screens from "./components/layouts/Screens.vue";
 import Screen from "./components/Screen.vue";
 import BackgroundTiles from "./components/layouts/BackgroundTiles.vue";
+import Characters from "./components/layouts/Characters.vue";
+import Code from "./components/layouts/Code.vue";
 
 export default {
-  components: { Layout, Screens, Screen, BackgroundTiles },
+  components: { Layout, Screens, Screen, BackgroundTiles, Characters, Code },
   computed: {
     ...mapState(["currentLayout", "currentScreen"]),
   },
@@ -44,5 +48,15 @@ export default {
 
 .page {
   background: #222;
+}
+
+.input_form {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px;
+  background: none;
+  border: none;
+  border-bottom: solid 1px #888;
+  color: white;
 }
 </style>

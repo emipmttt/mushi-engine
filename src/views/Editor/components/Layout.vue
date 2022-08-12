@@ -5,11 +5,17 @@
     <!-- TILES -->
     <div @click="updateCurrentLayout('TL')" class="layout__button">TL</div>
     <!-- CHARACTER -->
-    <div @click="updateCurrentLayout('TL')" class="layout__button">CH</div>
+    <div @click="updateCurrentLayout('CH')" class="layout__button">CH</div>
+    
     <!-- CODE -->
-    <div @click="updateCurrentLayout('CD')" class="layout__button">CD</div>
+    <!-- <div @click="updateCurrentLayout('CD')" class="layout__button">CD</div> -->
+
     <!-- SAVE -->
-    <div @click="updateBackground()" class="layout__button">SV</div>
+    <div @click="updateBackground" class="layout__button">SV</div>
+    <!-- PLAY -->
+    <div @click="play" class="layout__button">
+      <img :src="require('../../../assets/icons/play.png')" />
+    </div>
   </div>
 </template>
 
@@ -30,6 +36,8 @@ export default {
         this.save();
       }
     },
+  play() {},
+
   },
 };
 </script>

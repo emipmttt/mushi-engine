@@ -1,6 +1,7 @@
 <template>
   <div class="screens">
     <div @click="createScreen" class="screens__button">Create</div>
+    <hr />
     <div
       v-for="(screen, index) in gameData.screens"
       :key="index"
