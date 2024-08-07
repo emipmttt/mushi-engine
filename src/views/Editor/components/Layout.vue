@@ -8,7 +8,7 @@
     <div @click="updateCurrentLayout('CH')" class="layout__button">CH</div>
     
     <!-- CODE -->
-    <!-- <div @click="updateCurrentLayout('CD')" class="layout__button">CD</div> -->
+    <div @click="updateCurrentLayout('CD')" class="layout__button">CD</div> 
 
     <!-- SAVE -->
     <div @click="updateBackground" class="layout__button">SV</div>

@@ -1,4 +1,12 @@
-# knights
+# Mushi engine
+
+A simple visual game engine in progress where you can build your own world, set character and program those with Javascript.
+
+Screens:
+
+![Image 1](./screens/1.png)
+![Image 1](./screens/2.png)
+![Image 1](./screens/3.png)
 
 ## Project setup
 ```
