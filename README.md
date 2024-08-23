@@ -4,9 +4,13 @@ A simple visual game engine in progress where you can build your own world, set 
 
 Screens:
 
+Character builder, you can push your files to define the sprites for the different directions of your player
 ![Image 1](./screens/1.png)
+Code editor to program the items in your world
 ![Image 1](./screens/2.png)
+World builder to create your scenarios.
 ![Image 1](./screens/3.png)
+
 
 ## Project setup
 ```
